@@ -3,34 +3,28 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
     async up(queryInterface, Sequelize) {
-        await queryInterface.createTable('teachers', {
+        await queryInterface.createTable('questionbanks', {
             id: {
                 allowNull: false,
                 autoIncrement: true,
                 primaryKey: true,
                 type: Sequelize.INTEGER
             },
-            teacherCode: {
+            questionBankCode: {
                 type: Sequelize.STRING
             },
-            firstName: {
+            teacherId: {
+                type: Sequelize.INTEGER
+            },
+            title: {
                 type: Sequelize.STRING
             },
-            lastName: {
+            subject: {
                 type: Sequelize.STRING
             },
-            email: {
-                type: Sequelize.STRING
-            },
-            password: {
-                type: Sequelize.STRING
-            },
-            department: {
-                type: Sequelize.STRING
-            },
-            role: {
-                type: Sequelize.STRING,
-                defaultValue: 'tc'
+            numberOfQuestions: {
+                type: Sequelize.INTEGER,
+                defaultValue: 0
             },
             createdAt: {
                 allowNull: false,
@@ -43,6 +37,6 @@ module.exports = {
         })
     },
     async down(queryInterface, Sequelize) {
-        await queryInterface.dropTable('teachers')
+        await queryInterface.dropTable('questionbanks')
     }
 }
