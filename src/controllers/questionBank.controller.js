@@ -44,6 +44,25 @@ const getQuestionBankById = async (req, res, next) => {
     }
 }
 
+const updateQuestionBank = async (req, res, next) => {
+    const { id } = req.params
+    const newData = req.body
+
+    try {
+        let questionBank = await QuestionBank.findByPk(id)
+
+        if (!questionBank) {
+            return next(createError(404))
+        }
+
+        questionBank = await questionBank.update(newData)
+
+        return res.json({ data: questionBank })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
 const deleteQuestionBank = async (req, res, next) => {
     const { id } = req.params
     try {
@@ -65,5 +84,6 @@ module.exports = {
     createQuestionBank,
     getAllQuestionBanks,
     getQuestionBankById,
+    updateQuestionBank,
     deleteQuestionBank
 }
