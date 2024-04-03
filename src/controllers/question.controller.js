@@ -28,6 +28,52 @@ const createQuestion = async (req, res, next) => {
     }
 }
 
+const getAllQuestions = async (req, res, next) => {
+    try {
+        const questions = await Question.findAll({ include: 'answers' })
+
+        return res.json({ data: questions })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
+const getQuestionById = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const question = await Question.findByPk(id, { include: 'answers' })
+
+        if (!question) {
+            return res.json(createError(404))
+        }
+
+        return res.json({ data: question })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
+const deleteQuestion = async (req, res, next) => {
+    try {
+        const { id } = req.params
+
+        const question = await Question.findByPk(id)
+        if (!question) {
+            return res.json(createError(404))
+        }
+
+        await question.destroy()
+
+        return res.json({ success: true, data: question })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
 module.exports = {
-    createQuestion
+    createQuestion,
+    getAllQuestions,
+    getQuestionById,
+    deleteQuestion
 }
