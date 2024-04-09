@@ -2,33 +2,38 @@
 'use strict'
 const { Model } = require('sequelize')
 module.exports = (sequelize, DataTypes) => {
-    class QuestionBank extends Model {
+    class Exam extends Model {
         /**
          * Helper method for defining associations.
          * This method is not a part of Sequelize lifecycle.
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            QuestionBank.belongsTo(models.Teacher, { foreignKey: 'teacherId' })
+            // define association here
         }
     }
-    QuestionBank.init(
+    Exam.init(
         {
-            questionBankCode: DataTypes.STRING,
-            teacherId: DataTypes.INTEGER,
-            title: DataTypes.STRING,
-            subjectId: DataTypes.INTEGER,
-            numberOfQuestions: {
+            studentId: {
                 type: DataTypes.INTEGER,
-                defaultValue: 0
+                allowNull: false
+            },
+            examinationId: {
+                type: DataTypes.INTEGER,
+                allowNull: false
+            },
+            questionOrder: {
+                type: DataTypes.JSON,
+                allowNull: false,
+                defaultValue: []
             }
         },
         {
             sequelize,
-            modelName: 'QuestionBank',
-            tableName: 'questionbanks',
+            modelName: 'Exam',
+            tableName: 'exams',
             timestamps: true
         }
     )
-    return QuestionBank
+    return Exam
 }
