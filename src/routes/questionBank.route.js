@@ -6,5 +6,6 @@ router.get('/', questionBankController.getAllQuestionBanks)
 router.get('/:id', questionBankController.getQuestionBankById)
 router.put('/:id', questionBankController.updateQuestionBank)
 router.delete('/:id', questionBankController.deleteQuestionBank)
+router.get('/:questionBankId/questions', questionBankController.getQuestionsByQuestionBankId)
 
 module.exports = router

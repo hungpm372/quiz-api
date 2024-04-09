@@ -7,5 +7,6 @@ router.get('/:id', teacherController.getTeacherById)
 router.put('/:id', teacherController.updateTeacher)
 router.delete('/:id', teacherController.deleteTeacher)
 router.get('/:teacherId/question-banks', teacherController.getQuestionBanksByTeacherId)
+router.get('/:teacherId/examinations', teacherController.getExaminationsByTeacherId)
 
 module.exports = router

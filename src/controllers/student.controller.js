@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
-const { Student } = require('~/models')
+const { Student, Examination, Sequelize } = require('~/models')
 
 const createStudent = async (req, res, next) => {
     try {
@@ -77,10 +77,39 @@ const deleteStudent = async (req, res, next) => {
     }
 }
 
+const getExaminationsByStudentClass = async (req, res, next) => {
+    const { classs } = req.params
+    console.log(classs)
+    try {
+        const examinations = await Examination.findAll({
+            where: {
+                classs,
+                endDate: {
+                    [Sequelize.Op.gt]: new Date()
+                }
+            },
+            include: [
+                {
+                    association: 'subject',
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'credits', 'theoryHours', 'practiceHours', 'status', 'id']
+                    }
+                }
+            ],
+            attributes: { exclude: ['createdAt', 'updatedAt'] }
+        })
+
+        return res.json({ data: examinations })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
 module.exports = {
     createStudent,
     getAllStudents,
     getStudentById,
     updateStudent,
-    deleteStudent
+    deleteStudent,
+    getExaminationsByStudentClass
 }

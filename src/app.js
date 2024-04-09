@@ -2,10 +2,12 @@
 const express = require('express')
 const cookieParser = require('cookie-parser')
 const cors = require('cors')
+const compression = require('compression')
 const helmet = require('helmet')
 const createError = require('http-errors')
 
 const appRouter = require('~/routes')
+const delay = require('./middlewares/delay.middleware')
 
 const app = express()
 
@@ -14,6 +16,8 @@ app.use(cookieParser())
 app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
+app.use(compression())
+// app.use(delay())
 
 app.use('/api', appRouter)
 

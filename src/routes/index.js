@@ -6,6 +6,7 @@ const studentRouter = require('./student.route')
 const subjectRouter = require('./subject.route')
 const questionBankRouter = require('./questionBank.route')
 const questionRouter = require('./question.route')
+const examinationRouter = require('./examination.route')
 
 router.use('/auth', authRouter)
 router.use('/admins', adminRouter)
@@ -14,5 +15,6 @@ router.use('/students', studentRouter)
 router.use('/subjects', subjectRouter)
 router.use('/question-banks', questionBankRouter)
 router.use('/questions', questionRouter)
+router.use('/examinations', examinationRouter)
 
 module.exports = router

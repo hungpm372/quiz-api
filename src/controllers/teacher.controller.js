@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
-const { Teacher, QuestionBank } = require('~/models')
+const { Teacher, QuestionBank, Examination } = require('~/models')
 
 const createTeacher = async (req, res, next) => {
     try {
@@ -92,11 +92,28 @@ const getQuestionBanksByTeacherId = async (req, res, next) => {
     }
 }
 
+const getExaminationsByTeacherId = async (req, res, next) => {
+    const { teacherId } = req.params
+    try {
+        const examinations = await Examination.findAll({
+            where: {
+                teacherId
+            },
+            include: 'subject'
+        })
+
+        return res.json({ data: examinations })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
 module.exports = {
     createTeacher,
     getAllTeachers,
     getTeacherById,
     updateTeacher,
     deleteTeacher,
-    getQuestionBanksByTeacherId
+    getQuestionBanksByTeacherId,
+    getExaminationsByTeacherId
 }

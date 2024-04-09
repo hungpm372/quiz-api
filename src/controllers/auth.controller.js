@@ -1,12 +1,15 @@
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
-const { Admin } = require('~/models')
+const { Admin, Student, Teacher } = require('~/models')
 const { generateAuthTokens } = require('~/utils/token')
 
 const signIn = async (req, res, next) => {
     try {
         const { email, password } = req.body
-        const user = await Admin.findOne({ where: { email } })
+        let user = await Admin.findOne({ where: { email } })
+
+        if (!user) user = await Teacher.findOne({ where: { email } })
+        if (!user) user = await Student.findOne({ where: { email } })
 
         if (!user) return next(createError(404))
 
@@ -32,7 +35,7 @@ const signUp = async (req, res) => {
     const salt = bcrypt.genSaltSync(10)
     const hashPassword = bcrypt.hashSync(password, salt)
     const admin = await Admin.create({
-        adminCode: 'abc',
+        adminCode: 'AD12345',
         role: 'ad',
         ...req.body,
         firstName: 'Hung',

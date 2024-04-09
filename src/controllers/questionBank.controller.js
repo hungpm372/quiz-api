@@ -1,5 +1,5 @@
 const createError = require('http-errors')
-const { QuestionBank } = require('~/models')
+const { QuestionBank, Question } = require('~/models')
 
 const createQuestionBank = async (req, res, next) => {
     try {
@@ -80,10 +80,32 @@ const deleteQuestionBank = async (req, res, next) => {
     }
 }
 
+const getQuestionsByQuestionBankId = async (req, res, next) => {
+    const { questionBankId } = req.params
+    try {
+        const questions = await Question.findAll({
+            where: {
+                questionBankId
+            },
+            include: [
+                {
+                    association: 'answers',
+                    attributes: { exclude: ['createdAt', 'updatedAt'] }
+                }
+            ]
+        })
+
+        return res.json({ data: questions })
+    } catch (error) {
+        return next(createError(500, error.message))
+    }
+}
+
 module.exports = {
     createQuestionBank,
     getAllQuestionBanks,
     getQuestionBankById,
     updateQuestionBank,
-    deleteQuestionBank
+    deleteQuestionBank,
+    getQuestionsByQuestionBankId
 }
