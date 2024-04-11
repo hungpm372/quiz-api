@@ -26,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.JSON,
                 allowNull: false,
                 defaultValue: []
+            },
+            selectedAnswerId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                defaultValue: null
             }
         },
         {

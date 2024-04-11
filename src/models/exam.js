@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
          * The `models/index` file will call this method automatically.
          */
         static associate(models) {
-            // define association here
+            Exam.belongsTo(models.Examination, { foreignKey: 'examinationId', as: 'examination' })
         }
     }
     Exam.init(
@@ -26,6 +26,26 @@ module.exports = (sequelize, DataTypes) => {
                 type: DataTypes.JSON,
                 allowNull: false,
                 defaultValue: []
+            },
+            score: {
+                type: DataTypes.FLOAT,
+                allowNull: true,
+                defaultValue: null
+            },
+            correctAnswers: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                defaultValue: null
+            },
+            incorrectAnswers: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                defaultValue: null
+            },
+            submitted: {
+                type: DataTypes.BOOLEAN,
+                allowNull: false,
+                defaultValue: false
             }
         },
         {

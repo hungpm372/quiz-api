@@ -13,6 +13,26 @@ const createExam = async (req, res, next) => {
     try {
         const { examinationId, studentId } = req.body
 
+        const exam = await Exam.findOne({
+            where: {
+                studentId,
+                examinationId
+            },
+            include: [
+                {
+                    association: 'examination',
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    },
+                    include: 'subject'
+                }
+            ]
+        })
+
+        if (exam) {
+            return res.json({ data: exam })
+        }
+
         const examination = await Examination.findByPk(examinationId)
         const questionBank = await QuestionBank.findOne({
             where: {
@@ -42,7 +62,9 @@ const createExam = async (req, res, next) => {
             examinationId,
             questionOrder
         }
+
         const newExam = await Exam.create(examData)
+        newExam.setDataValue('duration', examination.duration)
 
         for (const question of questions) {
             const shuffledAnswers = shuffleAnswers(question.answers)

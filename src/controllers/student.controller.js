@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
-const { Student, Examination, Sequelize } = require('~/models')
+const { Student, Examination } = require('~/models')
 
 const createStudent = async (req, res, next) => {
     try {
@@ -79,14 +79,11 @@ const deleteStudent = async (req, res, next) => {
 
 const getExaminationsByStudentClass = async (req, res, next) => {
     const { classs } = req.params
-    console.log(classs)
+
     try {
         const examinations = await Examination.findAll({
             where: {
-                classs,
-                endDate: {
-                    [Sequelize.Op.gt]: new Date()
-                }
+                classs
             },
             include: [
                 {
@@ -96,7 +93,8 @@ const getExaminationsByStudentClass = async (req, res, next) => {
                     }
                 }
             ],
-            attributes: { exclude: ['createdAt', 'updatedAt'] }
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            order: [['createdAt', 'DESC']]
         })
 
         return res.json({ data: examinations })

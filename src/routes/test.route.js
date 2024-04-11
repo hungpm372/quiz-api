@@ -12,27 +12,28 @@ const shuffleArray = (array) => {
 }
 
 router.get('/', async (req, res) => {
-    const questions = await Question.findAll({
-        where: { questionBankId: 3 },
-        order: Sequelize.literal('rand()'),
-        limit: 2,
-        attributes: { exclude: ['createdAt', 'updatedAt', 'difficulty'] },
-        include: [
-            {
-                association: 'answers',
-                attributes: {
-                    exclude: ['createdAt', 'updatedAt', 'questionId']
-                }
-            }
-        ]
-    })
+    // const questions = await Question.findAll({
+    //     where: { questionBankId: 3 },
+    //     order: Sequelize.literal('rand()'),
+    //     limit: 2,
+    //     attributes: { exclude: ['createdAt', 'updatedAt', 'difficulty'] },
+    //     include: [
+    //         {
+    //             association: 'answers',
+    //             attributes: {
+    //                 exclude: ['createdAt', 'updatedAt', 'questionId']
+    //             }
+    //         }
+    //     ]
+    // })
 
-    questions.forEach((question) => {
-        question.answers = shuffleArray(question.answers)
-        const ids = question.answers.map((answer) => answer.id)
-        console.log(ids)
-    })
-
+    // questions.forEach((question) => {
+    //     question.answers = shuffleArray(question.answers)
+    //     const ids = question.answers.map((answer) => answer.id)
+    //     console.log(ids)
+    // })
+    const questions = await Question.findOne()
+    questions.setDataValue('name', 'Lincoln')
     return res.json(questions)
 })
 
