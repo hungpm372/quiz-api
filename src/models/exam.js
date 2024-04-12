@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             Exam.belongsTo(models.Examination, { foreignKey: 'examinationId', as: 'examination' })
+            Exam.hasMany(models.ShuffledQuestion, { foreignKey: 'examId', as: 'shuffledQuestions' })
         }
     }
     Exam.init(
@@ -21,11 +22,6 @@ module.exports = (sequelize, DataTypes) => {
             examinationId: {
                 type: DataTypes.INTEGER,
                 allowNull: false
-            },
-            questionOrder: {
-                type: DataTypes.JSON,
-                allowNull: false,
-                defaultValue: []
             },
             score: {
                 type: DataTypes.FLOAT,
