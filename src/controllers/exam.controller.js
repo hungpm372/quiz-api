@@ -210,8 +210,51 @@ const submitExam = async (req, res, next) => {
     }
 }
 
+const getExamResultById = async (req, res, next) => {
+    try {
+        const { id: examId } = req.params
+
+        const exam = await Exam.findByPk(examId, {
+            order: [['shuffledQuestions', 'id', 'ASC']],
+            include: [
+                {
+                    association: 'shuffledQuestions',
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt', 'questionId', 'examId']
+                    },
+                    include: [
+                        {
+                            association: 'questionDetail',
+                            attributes: {
+                                exclude: ['createdAt', 'updatedAt', 'difficulty', 'questionBankId']
+                            },
+                            include: [
+                                {
+                                    association: 'answers',
+                                    attributes: {
+                                        exclude: ['createdAt', 'updatedAt', 'questionId']
+                                    }
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ],
+            attributes: {
+                exclude: ['createdAt', 'updatedAt']
+            }
+        })
+        return res.json({
+            data: exam
+        })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
 module.exports = {
     createExam,
     getExamById,
-    submitExam
+    submitExam,
+    getExamResultById
 }

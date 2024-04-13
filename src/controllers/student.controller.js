@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const createError = require('http-errors')
-const { Student, Examination } = require('~/models')
+const { Student, Examination, Exam } = require('~/models')
 
 const createStudent = async (req, res, next) => {
     try {
@@ -103,11 +103,45 @@ const getExaminationsByStudentClass = async (req, res, next) => {
     }
 }
 
+const getExamsByStudentId = async (req, res, next) => {
+    const { id: studentId } = req.params
+
+    try {
+        const exams = await Exam.findAll({
+            where: {
+                studentId,
+                submitted: true
+            },
+            include: [
+                {
+                    association: 'examination',
+                    attributes: {
+                        exclude: ['createdAt', 'updatedAt']
+                    },
+                    include: [
+                        {
+                            association: 'subject',
+                            attributes: ['subjectName']
+                        }
+                    ]
+                }
+            ],
+            attributes: { exclude: ['createdAt', 'updatedAt'] },
+            order: [['createdAt', 'DESC']]
+        })
+
+        return res.json({ data: exams })
+    } catch (error) {
+        return next(createError(500))
+    }
+}
+
 module.exports = {
     createStudent,
     getAllStudents,
     getStudentById,
     updateStudent,
     deleteStudent,
-    getExaminationsByStudentClass
+    getExaminationsByStudentClass,
+    getExamsByStudentId
 }
