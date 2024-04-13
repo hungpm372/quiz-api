@@ -3,7 +3,7 @@ const createError = require('http-errors')
 
 const verifyToken = (req, res, next) => {
     try {
-        const token = req.cookies.token
+        const token = req.headers.authorization.split(' ')[1]
 
         if (!token) return next(createError(401))
 
@@ -16,6 +16,30 @@ const verifyToken = (req, res, next) => {
     }
 }
 
+const isAdmin = (req, res, next) => {
+    if (req.user && req.user.role === 'ad') {
+        return next()
+    }
+    return next(createError(403))
+}
+
+const isTeacher = (req, res, next) => {
+    if (req.user && req.user.role === 'tc') {
+        return next()
+    }
+    return next(createError(403))
+}
+
+const isStudent = (req, res, next) => {
+    if (req.user && req.user.role === 'st') {
+        return next()
+    }
+    return next(createError(403))
+}
+
 module.exports = {
-    verifyToken
+    verifyToken,
+    isAdmin,
+    isTeacher,
+    isStudent
 }

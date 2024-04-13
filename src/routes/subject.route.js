@@ -1,10 +1,11 @@
 const router = require('express').Router()
 const subjectController = require('~/controllers/subject.controller')
+const { isAdmin } = require('~/middlewares/auth.middleware')
 
-router.post('/', subjectController.createSubject)
+router.post('/', isAdmin, subjectController.createSubject)
 router.get('/', subjectController.getAllSubjects)
 router.get('/:id', subjectController.getSubjectById)
-router.put('/:id', subjectController.updateSubject)
-router.delete('/:id', subjectController.deleteSubject)
+router.put('/:id', isAdmin, subjectController.updateSubject)
+router.delete('/:id', isAdmin, subjectController.deleteSubject)
 
 module.exports = router

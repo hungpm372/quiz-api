@@ -1,7 +1,8 @@
 const router = require('express').Router()
 const studentController = require('~/controllers/student.controller')
+const { isAdmin } = require('~/middlewares/auth.middleware')
 
-router.post('/', studentController.createStudent)
+router.post('/', isAdmin, studentController.createStudent)
 router.get('/', studentController.getAllStudents)
 router.get('/:id', studentController.getStudentById)
 router.put('/:id', studentController.updateStudent)

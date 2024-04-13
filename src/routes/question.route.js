@@ -1,10 +1,10 @@
 const router = require('express').Router()
 const questionController = require('~/controllers/question.controller')
+const { isTeacher } = require('~/middlewares/auth.middleware')
 
-router.post('/', questionController.createQuestion)
+router.post('/', isTeacher, questionController.createQuestion)
 router.get('/', questionController.getAllQuestions)
 router.get('/:id', questionController.getQuestionById)
-// router.put('/:id', questionController.updateStudent)
-router.delete('/:id', questionController.deleteQuestion)
+router.delete('/:id', isTeacher, questionController.deleteQuestion)
 
 module.exports = router
