@@ -7,7 +7,7 @@ const helmet = require('helmet')
 const createError = require('http-errors')
 
 const appRouter = require('~/routes')
-const delay = require('./middlewares/delay.middleware')
+const delayMiddleware = require('./middlewares/delay.middleware')
 
 const app = express()
 
@@ -17,7 +17,7 @@ app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(compression())
-// app.use(delay())
+app.use(delayMiddleware())
 
 app.use('/api', appRouter)
 
