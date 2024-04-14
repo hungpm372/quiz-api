@@ -64,7 +64,7 @@ const createExam = async (req, res, next) => {
         const questions = await Question.findAll({
             where: { questionBankId: questionBank.id },
             order: Sequelize.literal('rand()'),
-            limit: examination.duration,
+            limit: examination.numberOfQuestions,
             attributes: { exclude: ['createdAt', 'updatedAt', 'difficulty'] },
             include: [
                 {

@@ -3,7 +3,7 @@ const { Examination } = require('~/models')
 
 const createExamination = async (req, res, next) => {
     try {
-        const { teacherId, subjectId, examName, startDate, endDate, duration, classs } = req.body
+        const { teacherId, subjectId, examName, startDate, endDate, duration, classs, numberOfQuestions } = req.body
         
         const examination = await Examination.create({
             teacherId,
@@ -12,7 +12,8 @@ const createExamination = async (req, res, next) => {
             startDate,
             endDate,
             duration,
-            classs
+            classs,
+            numberOfQuestions
         })
 
         return res.json({

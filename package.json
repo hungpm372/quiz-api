@@ -11,8 +11,8 @@
     "clean": "rm -rf build && mkdir build",
     "build-babel": "babel ./src -d ./build/src",
     "build": "npm run clean && npm run build-babel",
-    "production": "npm run build && node ./build/src/server.js",
-    "dev": "nodemon --exec babel-node server.js"
+    "production": "npm run build && cross-env BUILD_MODE=prod node ./build/src/server.js",
+    "dev": "cross-env BUILD_MODE=dev nodemon --exec babel-node ./src/server.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.22.10",
@@ -20,6 +20,7 @@
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.19.2",
     "helmet": "^7.1.0",

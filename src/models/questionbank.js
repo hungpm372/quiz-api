@@ -10,6 +10,7 @@ module.exports = (sequelize, DataTypes) => {
          */
         static associate(models) {
             QuestionBank.belongsTo(models.Teacher, { foreignKey: 'teacherId' })
+            QuestionBank.belongsTo(models.Subject, { foreignKey: 'subjectId', as: 'subject' })
         }
     }
     QuestionBank.init(

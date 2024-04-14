@@ -83,7 +83,8 @@ const getQuestionBanksByTeacherId = async (req, res, next) => {
         const questionBanks = await QuestionBank.findAll({
             where: {
                 teacherId
-            }
+            },
+            include: 'subject'
         })
 
         return res.json({ data: questionBanks })
