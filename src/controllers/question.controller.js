@@ -23,6 +23,32 @@ const createQuestion = async (req, res, next) => {
                 answers: createdAnswers
             }
         })
+        // const questions = []
+
+        // for (let i = 0; i < req.body.length; i++) {
+        //     const { content, difficulty, questionBankId, answers } = req.body[i]
+
+        //     const question = await Question.create({ content, difficulty, questionBankId })
+
+        //     const createdAnswers = await Promise.all(
+        //         answers.map((answer) => {
+        //             return Answer.create({
+        //                 answerContent: answer.answerContent,
+        //                 isCorrect: answer.isCorrect,
+        //                 questionId: question.id
+        //             })
+        //         })
+        //     )
+
+        //     questions.push({
+        //         ...question.toJSON(),
+        //         answers: createdAnswers
+        //     })
+        // }
+
+        // return res.json({
+        //     data: questions
+        // })
     } catch (error) {
         return next(createError(500))
     }
