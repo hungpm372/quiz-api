@@ -8,7 +8,6 @@ const questionBankRouter = require('./questionBank.route')
 const questionRouter = require('./question.route')
 const examinationRouter = require('./examination.route')
 const examRouter = require('./exam.route')
-const testRouter = require('./test.route')
 const { verifyToken } = require('~/middlewares/auth.middleware')
 
 router.use('/auth', authRouter)
@@ -17,9 +16,8 @@ router.use('/teachers', verifyToken, teacherRouter)
 router.use('/students', verifyToken, studentRouter)
 router.use('/subjects', verifyToken, subjectRouter)
 router.use('/question-banks', verifyToken, questionBankRouter)
-router.use('/questions', /* verifyToken,*/ questionRouter)
+router.use('/questions', verifyToken, questionRouter)
 router.use('/examinations', verifyToken, examinationRouter)
 router.use('/exams', verifyToken, examRouter)
-router.use('/tests', testRouter)
 
 module.exports = router
